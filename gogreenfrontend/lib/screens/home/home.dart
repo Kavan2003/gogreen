@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:gogreenfrontend/maps/maps.dart';
 import 'package:gogreenfrontend/screens/login/login.dart';
 import '../../util/constants.dart';
 
 class Home extends StatefulWidget {
-  const Home({super.key});
+  const Home({Key? key}) : super(key: key);
 
   @override
   State<Home> createState() => _HomeState();
@@ -15,7 +14,6 @@ class _HomeState extends State<Home> {
   int _selectedIndex = 0; // Initially selected index
 
   final List<BottomNavigationBarItem> _items = [
-    // Define each bottom navigation bar item
     BottomNavigationBarItem(
       icon: Icon(Icons.home),
       label: 'Home',
@@ -24,10 +22,6 @@ class _HomeState extends State<Home> {
       icon: Icon(Icons.search),
       label: 'Search',
     ),
-    // BottomNavigationBarItem(
-    //   icon: Icon(Icons.add_shopping_cart),
-    //   label: 'Add To Cart',
-    // ),
     BottomNavigationBarItem(
       icon: Icon(Icons.person),
       label: 'Profile',
@@ -35,10 +29,8 @@ class _HomeState extends State<Home> {
   ];
 
   final List<Widget> _screens = [
-    // Define each screen corresponding to bottom navigation items
     HomeScreen(),
     SearchScreen(),
-    //AddToCartScreen(),
     ProfileScreen(),
   ];
 
@@ -70,7 +62,6 @@ class _HomeState extends State<Home> {
                 size: 30,
               ),
               onPressed: () {
-                // Your profile button action
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const Login()),
@@ -98,9 +89,7 @@ class _HomeState extends State<Home> {
         ),
         selectedFontSize: 15,
         onTap: _onItemTapped,
-        // Optional: Center the text labels
         type: BottomNavigationBarType.fixed, // Needed for more than 3 items
-        // Optional: Display centered badge to indicate selected screen
         showUnselectedLabels: true, // Show labels for all items
       ),
     );
@@ -108,7 +97,7 @@ class _HomeState extends State<Home> {
 }
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -117,7 +106,7 @@ class HomeScreen extends StatelessWidget {
 }
 
 class SearchScreen extends StatelessWidget {
-  const SearchScreen({super.key});
+  const SearchScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -130,29 +119,9 @@ class SearchScreen extends StatelessWidget {
   }
 }
 
-// class AddToCartScreen extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return const Center(
-//       child: Text(
-//         'Add To Cart Screen',
-//         style: TextStyle(fontSize: 20.0),
-//       ),
-//     );
-//   }
-// }
-class AddToCartScreen extends StatelessWidget {
-  const AddToCartScreen({super.key});
+class ProfileScreen extends StatelessWidget {
+  const ProfileScreen({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Add To Cart Screen', style: TextStyle(fontSize: 20.0)),
-    );
-  }
-}
-
-class ChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Center(
