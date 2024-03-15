@@ -204,7 +204,7 @@ class _SignUpPageState extends State<Address> {
               TextFormField(
                 controller: _stateController,
                 decoration: InputDecoration(
-                  labelText: 'State',
+                  labelText: 'Enter State',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(25.0),
                     borderSide: BorderSide(
@@ -233,7 +233,7 @@ class _SignUpPageState extends State<Address> {
               TextFormField(
                 controller: _cityController,
                 decoration: InputDecoration(
-                  labelText: 'City',
+                  labelText: 'Enter City',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(25.0),
                     borderSide: BorderSide(

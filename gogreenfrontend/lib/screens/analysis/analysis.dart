@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:gogreenfrontend/screens/analysis/component_analysisform.dart';
+import 'package:gogreenfrontend/util/constants.dart';
 
 class AnalysisScreen extends StatelessWidget {
   AnalysisScreen({Key? key}) : super(key: key);
@@ -31,7 +32,7 @@ class AnalysisScreen extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 15,
                           color: Colors.black,
-                          fontWeight: FontWeight.w100),
+                          fontWeight: FontWeight.w400),
                     ),
                   ],
                 ),
@@ -43,7 +44,7 @@ class AnalysisScreen extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 15,
                         color: Colors.black,
-                        fontWeight: FontWeight.w100,
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
                     Image.asset("assets/takephoto.png")
@@ -58,7 +59,7 @@ class AnalysisScreen extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 15,
                         color: Colors.black,
-                        fontWeight: FontWeight.w100,
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
                   ],
@@ -82,11 +83,16 @@ class AnalysisScreen extends StatelessWidget {
                   ),
                 );
               },
-              child: Text('Show Modal'),
+              child: Text('Show Modal',
+                style:TextStyle(
+                  color:Colors.white,
+                  fontSize:15,
+                ),
+              ),
               style: TextButton.styleFrom(
                   padding: EdgeInsets.symmetric(
                       horizontal: MediaQuery.of(context).size.width * 0.2),
-                  backgroundColor: Colors.green),
+                  backgroundColor: GoGreenColors.primaryDark),
             ),
           ),
         ],

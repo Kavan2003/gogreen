@@ -3,6 +3,8 @@ import 'package:gogreenfrontend/maps/maps.dart';
 import 'package:gogreenfrontend/screens/analysis/analysis.dart';
 import 'package:gogreenfrontend/screens/login/login.dart';
 import '../../util/constants.dart';
+import '../profile/profile.dart';
+import '../search/search.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -102,19 +104,6 @@ class _HomeState extends State<Home> {
   }
 }
 
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text(
-        'Profile Screen',
-        style: TextStyle(fontSize: 20.0),
-      ),
-    );
-  }
-}
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -125,16 +114,3 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class SearchScreen extends StatelessWidget {
-  const SearchScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text(
-        'Search Screen',
-        style: TextStyle(fontSize: 20.0),
-      ),
-    );
-  }
-}

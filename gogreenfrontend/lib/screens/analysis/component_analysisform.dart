@@ -6,6 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../util/constants.dart';
+
 class AnalysisForm extends StatefulWidget {
   @override
   State<AnalysisForm> createState() => _AnalysisFormState();
@@ -105,21 +107,55 @@ class _AnalysisFormState extends State<AnalysisForm> {
         : Container(
             padding: EdgeInsets.all(paddingvalue),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: isSwitched
                   ? [
                       Text(output),
-                      TextButton(
-                        onPressed: () => _pickImage(ImageSource.camera),
-                        child: Text('Open Camera'),
+                      Container(
+                        height: 50,
+                        width: double.infinity,
+                        child: TextButton(
+                            onPressed: () => _pickImage(ImageSource.camera),
+                            child: Text(
+                              'Open Camera',
+                              style: TextStyle(
+                                color: GoGreenColors.primaryContrast,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                              ),
+                            ),
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                GoGreenColors.primaryDark,
+                              ),
+                            )),
                       ),
-                      TextButton(
-                        onPressed: () => _pickImage(ImageSource.gallery),
-                        child: Text('Open Gallery'),
+                      SizedBox(height: 15),
+                      Container(
+                        height: 50,
+                        width: double.infinity,
+                        child: TextButton(
+                            onPressed: () => _pickImage(ImageSource.gallery),
+                            child: Text(
+                              'Open Gallery',
+                              style: TextStyle(
+                                color: GoGreenColors.primaryContrast,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                              ),
+                            ),
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                GoGreenColors.primaryDark,
+                              ),
+                            )),
                       ),
+                      SizedBox(height: 15),
                       _pickedImage != null
                           ? Image.file(File(_pickedImage!.path))
                           : Container(
+                              height: 50,
+                              width: double.infinity,
                               padding: EdgeInsets.all(10),
                               decoration: BoxDecoration(
                                 border: Border.all(
@@ -130,37 +166,100 @@ class _AnalysisFormState extends State<AnalysisForm> {
                               margin: EdgeInsets.all(10),
                               child: Text('No image selected'),
                             ),
-                      TextButton(
-                        onPressed: () {
-                          setState(() {
-                            submitdata();
-                          });
-                        },
-                        child: Text('Next'),
+                      SizedBox(height: 15),
+                      Container(
+                        height: 50,
+                        width: double.infinity,
+                        child: TextButton(
+                          onPressed: () {
+                            setState(() {
+                              submitdata();
+                            });
+                          },
+                          child: Text(
+                            'Next',
+                            style: TextStyle(
+                              color: GoGreenColors.primaryContrast,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                          ),
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                              GoGreenColors.primaryDark,
+                            ),
+                          ),
+                        ),
                       ),
                     ]
                   : [
+                      SizedBox(height: 50.0),
                       TextField(
                           controller: primaryReasonsController,
                           decoration: InputDecoration(
                             labelText: 'Enter primary reasons of red zone',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(25.0),
+                              borderSide: BorderSide(
+                                color: Colors.grey[850]!,
+                                width: 1.0,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(25.0),
+                              borderSide: BorderSide(
+                                color: GoGreenColors.primaryDark,
+                                width: 2.0,
+                              ),
+                            ),
                           )),
+                      SizedBox(height: 20),
                       TextField(
                         controller: numPeopleObservedController,
                         decoration: InputDecoration(
                           labelText: 'Number of people observed outdoors',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            borderSide: BorderSide(
+                              color: Colors.grey[850]!,
+                              width: 1.0,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            borderSide: BorderSide(
+                              color: GoGreenColors.primaryDark,
+                              width: 2.0,
+                            ),
+                          ),
                         ),
                         keyboardType: TextInputType.number,
                         inputFormatters: <TextInputFormatter>[
                           FilteringTextInputFormatter.digitsOnly
                         ],
                       ),
+                      SizedBox(height: 20),
                       TextField(
                         controller: observationsController,
                         decoration: InputDecoration(
                           labelText: 'Observations',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            borderSide: BorderSide(
+                              color: Colors.grey[850]!,
+                              width: 1.0,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            borderSide: BorderSide(
+                              color: GoGreenColors.primaryDark,
+                              width: 2.0,
+                            ),
+                          ),
                         ),
                       ),
+                      SizedBox(height: 20),
                       DropdownButtonFormField<String>(
                         items: ['Good', 'Moderate', 'Poor'].map((String value) {
                           return DropdownMenuItem<String>(
@@ -175,8 +274,23 @@ class _AnalysisFormState extends State<AnalysisForm> {
                         },
                         decoration: InputDecoration(
                           labelText: 'Visibility',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            borderSide: BorderSide(
+                              color: Colors.grey[850]!,
+                              width: 1.0,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            borderSide: BorderSide(
+                              color: GoGreenColors.primaryDark,
+                              width: 2.0,
+                            ),
+                          ),
                         ),
                       ),
+                      SizedBox(height: 20),
                       DropdownButtonFormField<String>(
                         items: ['Present', 'Absent'].map((String value) {
                           return DropdownMenuItem<String>(
@@ -191,14 +305,44 @@ class _AnalysisFormState extends State<AnalysisForm> {
                         },
                         decoration: InputDecoration(
                           labelText: 'Haze/Smog',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            borderSide: BorderSide(
+                              color: Colors.grey[850]!,
+                              width: 1.0,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            borderSide: BorderSide(
+                              color: GoGreenColors.primaryDark,
+                              width: 2.0,
+                            ),
+                          ),
                         ),
                       ),
+                      SizedBox(height: 20),
                       TextField(
                         controller: dustController,
                         decoration: InputDecoration(
                           labelText: 'Odors',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            borderSide: BorderSide(
+                              color: Colors.grey[850]!,
+                              width: 1.0,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            borderSide: BorderSide(
+                              color: GoGreenColors.primaryDark,
+                              width: 2.0,
+                            ),
+                          ),
                         ),
                       ),
+                      SizedBox(height: 20),
                       DropdownButtonFormField<String>(
                         items: ['Present', 'Absent'].map((String value) {
                           return DropdownMenuItem<String>(
@@ -213,8 +357,23 @@ class _AnalysisFormState extends State<AnalysisForm> {
                         },
                         decoration: InputDecoration(
                           labelText: 'Dust',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            borderSide: BorderSide(
+                              color: Colors.grey[850]!,
+                              width: 1.0,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            borderSide: BorderSide(
+                              color: GoGreenColors.primaryDark,
+                              width: 2.0,
+                            ),
+                          ),
                         ),
                       ),
+                      SizedBox(height: 20),
                       DropdownButtonFormField<String>(
                         items:
                             ['Heavy', 'Moderate', 'Light'].map((String value) {
@@ -230,8 +389,23 @@ class _AnalysisFormState extends State<AnalysisForm> {
                         },
                         decoration: InputDecoration(
                           labelText: 'Vehicle traffic',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            borderSide: BorderSide(
+                              color: Colors.grey[850]!,
+                              width: 1.0,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            borderSide: BorderSide(
+                              color: GoGreenColors.primaryDark,
+                              width: 2.0,
+                            ),
+                          ),
                         ),
                       ),
+                      SizedBox(height: 20),
                       DropdownButtonFormField<String>(
                         items: ['Present', 'Absent'].map((String value) {
                           return DropdownMenuItem<String>(
@@ -246,14 +420,44 @@ class _AnalysisFormState extends State<AnalysisForm> {
                         },
                         decoration: InputDecoration(
                           labelText: 'Construction activity',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            borderSide: BorderSide(
+                              color: Colors.grey[850]!,
+                              width: 1.0,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            borderSide: BorderSide(
+                              color: GoGreenColors.primaryDark,
+                              width: 2.0,
+                            ),
+                          ),
                         ),
                       ),
+                      SizedBox(height: 20),
                       TextField(
                         controller: openBurningController,
                         decoration: InputDecoration(
                           labelText: 'Industrial facilities',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            borderSide: BorderSide(
+                              color: Colors.grey[850]!,
+                              width: 1.0,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            borderSide: BorderSide(
+                              color: GoGreenColors.primaryDark,
+                              width: 2.0,
+                            ),
+                          ),
                         ),
                       ),
+                      SizedBox(height: 20.0),
                       DropdownButtonFormField<String>(
                         items: ['Present', 'Absent'].map((String value) {
                           return DropdownMenuItem<String>(
@@ -268,23 +472,68 @@ class _AnalysisFormState extends State<AnalysisForm> {
                         },
                         decoration: InputDecoration(
                           labelText: 'Open burning',
-                        ),
-                      ),
-                      TextField(
-                        decoration: InputDecoration(
-                          labelText: 'Other',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            borderSide: BorderSide(
+                              color: Colors.grey[850]!,
+                              width: 1.0,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            borderSide: BorderSide(
+                              color: GoGreenColors.primaryDark,
+                              width: 2.0,
+                            ),
+                          ),
                         ),
                       ),
                       SizedBox(height: 20.0),
-                      ElevatedButton(
-                        onPressed: () {
-                          setState(() {
-                            isSwitched = true;
-                            paddingvalue = 20.0;
-                          });
-                        },
-                        child: Text('Next'),
+                      TextField(
+                        decoration: InputDecoration(
+                          labelText: 'Other',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            borderSide: BorderSide(
+                              color: Colors.grey[850]!,
+                              width: 1.0,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            borderSide: BorderSide(
+                              color: GoGreenColors.primaryDark,
+                              width: 2.0,
+                            ),
+                          ),
+                        ),
                       ),
+                      SizedBox(height: 20.0),
+                      Container(
+                        height: 50,
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              isSwitched = true;
+                              paddingvalue = 25.0;
+                            });
+                          },
+                          child: const Text(
+                            'Next',
+                            style: TextStyle(
+                              color: GoGreenColors.primaryContrast,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 18,
+                            ),
+                          ),
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                              GoGreenColors.primaryDark,
+                            ),
+                          ),
+                        ),
+                      )
                     ],
             ),
           );
