@@ -3,6 +3,11 @@ allprojects {
         google()
         mavenCentral()
     }
+     configurations.all {
+        resolutionStrategy {
+            force 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.10'
+        }
+    }
 }
 
 rootProject.buildDir = '../build'
