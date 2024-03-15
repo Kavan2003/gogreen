@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_email_validator/email_validator.dart';
 import '../../util/constants.dart';
@@ -67,7 +69,7 @@ class _SignUpPageState extends State<Address> {
                 child: Text(
                   'User Current Location',
                   style: TextStyle(
-                    color:GoGreenColors.primaryDark,
+                    color: GoGreenColors.primaryDark,
                     fontSize: 18,
                   ),
                 ),
@@ -257,7 +259,9 @@ class _SignUpPageState extends State<Address> {
                   return null;
                 },
               ),
-             SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               TextFormField(
                 controller: _cityController,
                 decoration: InputDecoration(
@@ -295,11 +299,62 @@ class _SignUpPageState extends State<Address> {
             if (_formKey.currentState!.validate()) {
               // Form is valid, proceed with sign up
               _formKey.currentState!.save();
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Login()),
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.check_circle_outline_outlined,
+                          color: Colors.green,
+                          size: 60,
+                        ),
+                        SizedBox(height: 15),
+                        Text(
+                          "Sign Up Successful",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ],
+                    ),
+                    actions: [
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Login()),
+                          );
+                        },
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                            GoGreenColors.primaryContrast,
+                          ),
+                          shape: MaterialStateProperty.all<OutlinedBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25.0),
+                              side: BorderSide(
+                                color: GoGreenColors.primaryDark, // Green border color
+                                width: 2.0,
+                              ),
+                            ),
+                          ),
+                        ),
+                        child: Text(
+                          'OK',
+                          style: TextStyle(
+                            color: GoGreenColors.primaryDark,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                },
               );
-              // Perform sign up operation using form data
             }
           },
           child: const Text(
