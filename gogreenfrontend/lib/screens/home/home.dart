@@ -19,6 +19,10 @@ class _HomeState extends State<Home> {
       label: 'Home',
     ),
     BottomNavigationBarItem(
+      icon: Icon(Icons.analytics_sharp),
+      label: 'Analysis',
+    ),
+    BottomNavigationBarItem(
       icon: Icon(Icons.search),
       label: 'Search',
     ),
@@ -30,6 +34,7 @@ class _HomeState extends State<Home> {
 
   final List<Widget> _screens = [
     HomeScreen(),
+    AnalysisScreen(),
     SearchScreen(),
     ProfileScreen(),
   ];
@@ -96,6 +101,21 @@ class _HomeState extends State<Home> {
   }
 }
 
+class ProfileScreen extends StatelessWidget {
+  const ProfileScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: Text(
+        'Profile Screen',
+        style: TextStyle(fontSize: 20.0),
+      ),
+    );
+  }
+}
+
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -119,14 +139,14 @@ class SearchScreen extends StatelessWidget {
   }
 }
 
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+class AnalysisScreen extends StatelessWidget {
+  const AnalysisScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return const Center(
       child: Text(
-        'Profile Screen',
+        'Analysis Screen',
         style: TextStyle(fontSize: 20.0),
       ),
     );
