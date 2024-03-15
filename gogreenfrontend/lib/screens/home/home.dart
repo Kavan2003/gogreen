@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:gogreenfrontend/maps/maps.dart';
 import 'package:gogreenfrontend/screens/login/login.dart';
 import '../../util/constants.dart';
 
@@ -52,7 +53,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false, // Remove default back button
-        title: Text(
+        title: const Text(
           "GoGreen",
           style: TextStyle(
             fontSize: 25.0,
@@ -63,7 +64,7 @@ class _HomeState extends State<Home> {
           Padding(
             padding: const EdgeInsets.only(right: 5),
             child: IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.logout,
                 color: Colors.white,
                 size: 30,
@@ -72,7 +73,7 @@ class _HomeState extends State<Home> {
                 // Your profile button action
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Login()),
+                  MaterialPageRoute(builder: (context) => const Login()),
                 );
               },
             ),
@@ -92,7 +93,7 @@ class _HomeState extends State<Home> {
         selectedItemColor: GoGreenColors.primaryContrast,
         backgroundColor: GoGreenColors.primaryDark,
         unselectedItemColor: GoGreenColors.accentLight,
-        selectedIconTheme: IconThemeData(
+        selectedIconTheme: const IconThemeData(
           size: 33,
         ),
         selectedFontSize: 15,
@@ -106,51 +107,18 @@ class _HomeState extends State<Home> {
   }
 }
 
-// Placeholder screens, replace with actual screens/widgets
 class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Container(
-              height: 50, // Set the height of the search bar
-              child: Center(
-                child: TextField(
-                  textAlignVertical:TextAlignVertical.bottom,
-                  decoration: InputDecoration(
-                    hintText: 'Search.....',
-                    suffixIcon: Icon(Icons.search,size:25,),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(25.0), // Adjust the border radius as needed
-                      borderSide: BorderSide(color: Colors.grey[850]!, width: 1.0), // Set default border color and width
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(25.0), // Adjust the border radius as needed
-                      borderSide: BorderSide(color:GoGreenColors.primaryDark, width:2.0), // Set focused border color and width
-                    ),
-
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(height: 20), // Add some space between the search bar and other content
-            Text(
-              'Home Screen Content',
-              style: TextStyle(fontSize: 20.0),
-            ),
-          ],
-        ),
-      ),
-    );
+    return Container(child: const MapComponent());
   }
 }
 
-
 class SearchScreen extends StatelessWidget {
+  const SearchScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return const Center(
@@ -173,8 +141,18 @@ class SearchScreen extends StatelessWidget {
 //     );
 //   }
 // }
+class AddToCartScreen extends StatelessWidget {
+  const AddToCartScreen({super.key});
 
-class ProfileScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: Text('Add To Cart Screen', style: TextStyle(fontSize: 20.0)),
+    );
+  }
+}
+
+class ChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Center(

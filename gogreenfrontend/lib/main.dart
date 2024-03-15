@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gogreenfrontend/screens/home/home.dart';
 import 'package:gogreenfrontend/screens/login/login.dart';
 
 void main() {
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Login(), // Use your Home widget here
+      home: Login(),
     );
   }
 }

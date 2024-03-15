@@ -45,35 +45,6 @@ class _SignUpPageState extends State<Address> {
               SizedBox(
                 height: 20,
               ),
-              ElevatedButton(
-                onPressed: () {
-
-                },
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(
-                    GoGreenColors.primaryContrast,
-                  ),
-                  shape: MaterialStateProperty.all<OutlinedBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25.0),
-                      side: BorderSide(
-                        color: GoGreenColors.primaryDark, // Green border color
-                        width: 2.0,
-                      ),
-                    ),
-                  ),
-                ),
-                child: Text(
-                  'User Current Location',
-                  style: TextStyle(
-                    color: GoGreenColors.primaryDark,
-                    fontSize: 18,
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
               Text(
                 'Or',
                 textAlign: TextAlign.center,
@@ -334,7 +305,8 @@ class _SignUpPageState extends State<Address> {
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(25.0),
                               side: BorderSide(
-                                color: GoGreenColors.primaryDark, // Green border color
+                                color: GoGreenColors
+                                    .primaryDark, // Green border color
                                 width: 2.0,
                               ),
                             ),

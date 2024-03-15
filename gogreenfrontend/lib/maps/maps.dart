@@ -14,22 +14,50 @@ class MapPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Map();
+    return const MapComponent();
   }
 }
 
-class Map extends StatefulWidget {
-  const Map({super.key});
+class MapComponent extends StatefulWidget {
+  const MapComponent({super.key});
 
   @override
-  State createState() => MapState();
+  State createState() => MapComponentState();
 }
 
-class MapState extends State<Map> {
+class MapComponentState extends State<MapComponent> {
   late MaplibreMapController mapController;
 
   void _onMapCreated(MaplibreMapController controller) {
     mapController = controller;
+
+    mapController.addListener(() {
+      setState(() {
+        print("Zoom level: ${mapController.cameraPosition!.zoom}");
+        var zoom = mapController.cameraPosition!.zoom;
+        var radiusMeters = 10000; // 10 km in meters
+
+        var devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
+
+        var minRadiusPixels = 50.0; // Adjust as needed
+
+        var pixelRatio = 156543.03392 * math.pow(2, zoom);
+        var adjustedPixelRatio = pixelRatio * devicePixelRatio;
+
+        var circleRadiusPixels =
+            math.max(radiusMeters / adjustedPixelRatio, minRadiusPixels);
+      });
+    });
+
+    _addSymbol();
+  }
+
+  void _onStyleLoaded() {
+    _addCircles();
+    _addSymbol();
+  }
+
+  void _addCircles() {
     var zoom = mapController.cameraPosition!.zoom;
     var radiusMeters = 10000; // 10 km in meters
     var pixelRatio = 156543.03392 * math.pow(2, zoom); // Adjust as needed
@@ -37,6 +65,7 @@ class MapState extends State<Map> {
     print("Circle radius in pixels: $circleRadiusPixels");
     print(
         "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||");
+
     mapController.addCircles([
       CircleOptions(
         geometry: LatLng(18.992711, 73.110371),
@@ -60,30 +89,6 @@ class MapState extends State<Map> {
         circleColor: "#0000FF", // Blue
       ),
     ]);
-
-    mapController.addListener(() {
-      setState(() {
-        // Access zoom level and adjust radius based on zoom (optional)
-        print("Zoom level: ${mapController.cameraPosition!.zoom}");
-        var zoom = mapController.cameraPosition!.zoom;
-        var radiusMeters = 10000; // 10 km in meters
-
-        // Consider additional factors like device pixel density
-        var devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
-
-        // Minimum radius to prevent very small circles
-        var minRadiusPixels = 50.0; // Adjust as needed
-
-        var pixelRatio = 156543.03392 * math.pow(2, zoom);
-        var adjustedPixelRatio = pixelRatio * devicePixelRatio;
-
-        // Ensure radius is at least minRadiusPixels
-        var circleRadiusPixels =
-            math.max(radiusMeters / adjustedPixelRatio, minRadiusPixels);
-      });
-    });
-
-    _addSymbol();
   }
 
   void _addSymbol() {
@@ -97,47 +102,17 @@ class MapState extends State<Map> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('GoGreen Maps'),
-          backgroundColor: GoGreenColors.primaryColor,
-          actions: [
-            Row(
-              children: [
-                FloatingActionButton(
-                  child: Icon(Icons.add),
-                  onPressed: () {
-                    mapController.moveCamera(
-                      CameraUpdate.zoomIn(),
-                    );
-                  },
-                ),
-                SizedBox(height: 20),
-                FloatingActionButton(
-                  child: Icon(Icons.remove),
-                  onPressed: () {
-                    mapController.moveCamera(
-                      CameraUpdate.zoomBy(3),
-                    );
-                  },
-                ),
-              ],
-            ),
-          ],
-        ),
-        body: MaplibreMap(
-          onMapCreated: _onMapCreated,
-          styleString: "$styleUrl?key=$apiKey",
-          myLocationEnabled: true,
-          initialCameraPosition: const CameraPosition(
-            target: LatLng(18.992710, 73.110370),
-            zoom: 15.0,
-          ),
-          trackCameraPosition: true,
-          zoomGesturesEnabled: false,
-        ),
+    return MaplibreMap(
+      onMapCreated: _onMapCreated,
+      onStyleLoadedCallback: _onStyleLoaded,
+      styleString: "$styleUrl?key=$apiKey",
+      myLocationEnabled: true,
+      initialCameraPosition: const CameraPosition(
+        target: LatLng(18.992710, 73.110370),
+        zoom: 15.0,
       ),
+      trackCameraPosition: true,
+      zoomGesturesEnabled: false,
     );
   }
 }
