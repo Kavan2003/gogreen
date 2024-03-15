@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gogreenfrontend/screens/home/home.dart';
 import 'package:gogreenfrontend/screens/login/login.dart';
 
 void main() {

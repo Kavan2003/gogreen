@@ -86,6 +86,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_email_validator:
+    dependency: "direct main"
+    description:
+      name: flutter_email_validator
+      sha256: "6c89ae333bad4080f3c5182475661e119f9936450477d600458c6a7dfdceda6f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.24"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -128,6 +136,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  form_validator:
+    dependency: "direct main"
+    description:
+      name: form_validator
+      sha256: "8cbe91b7d5260870d6fb9e23acd55d5d1d1fdf2397f0279a4931ac3c0c7bf8fb"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.1"
   leak_tracker:
     dependency: transitive
     description:

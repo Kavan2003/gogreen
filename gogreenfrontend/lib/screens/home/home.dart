@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:gogreenfrontend/screens/login/login.dart';
 import '../../util/constants.dart';
 
 class Home extends StatefulWidget {
@@ -50,6 +51,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false, // Remove default back button
         title: Text(
           "GoGreen",
           style: TextStyle(
@@ -59,15 +61,19 @@ class _HomeState extends State<Home> {
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.only(right: 7),
+            padding: const EdgeInsets.only(right: 5),
             child: IconButton(
               icon: Icon(
-                Icons.account_circle_rounded,
+                Icons.logout,
                 color: Colors.white,
-                size: 36,
+                size: 30,
               ),
               onPressed: () {
                 // Your profile button action
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Login()),
+                );
               },
             ),
           ),
@@ -76,7 +82,10 @@ class _HomeState extends State<Home> {
         elevation: 4.0,
         centerTitle: true,
       ),
-      body: _screens[_selectedIndex], // Show the selected screen
+      body: WillPopScope(
+        onWillPop: () async => false, // Disable device back button
+        child: _screens[_selectedIndex], // Show the selected screen
+      ),
       bottomNavigationBar: BottomNavigationBar(
         items: _items,
         currentIndex: _selectedIndex,
