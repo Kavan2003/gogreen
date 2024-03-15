@@ -23,13 +23,13 @@ class _HomeState extends State<Home> {
       icon: Icon(Icons.search),
       label: 'Search',
     ),
+    // BottomNavigationBarItem(
+    //   icon: Icon(Icons.add_shopping_cart),
+    //   label: 'Add To Cart',
+    // ),
     BottomNavigationBarItem(
-      icon: Icon(Icons.add_shopping_cart),
-      label: 'Add To Cart',
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.chat),
-      label: 'Chat',
+      icon: Icon(Icons.person),
+      label: 'Profile',
     ),
   ];
 
@@ -37,8 +37,8 @@ class _HomeState extends State<Home> {
     // Define each screen corresponding to bottom navigation items
     HomeScreen(),
     SearchScreen(),
-    AddToCartScreen(),
-    ChatScreen(),
+    //AddToCartScreen(),
+    ProfileScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -153,7 +153,7 @@ class HomeScreen extends StatelessWidget {
 class SearchScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return const Center(
       child: Text(
         'Search Screen',
         style: TextStyle(fontSize: 20.0),
@@ -162,24 +162,24 @@ class SearchScreen extends StatelessWidget {
   }
 }
 
-class AddToCartScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        'Add To Cart Screen',
-        style: TextStyle(fontSize: 20.0),
-      ),
-    );
-  }
-}
+// class AddToCartScreen extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return const Center(
+//       child: Text(
+//         'Add To Cart Screen',
+//         style: TextStyle(fontSize: 20.0),
+//       ),
+//     );
+//   }
+// }
 
-class ChatScreen extends StatelessWidget {
+class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return const Center(
       child: Text(
-        'Chat Screen',
+        'Profile Screen',
         style: TextStyle(fontSize: 20.0),
       ),
     );
