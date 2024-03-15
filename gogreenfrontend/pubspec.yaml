@@ -43,6 +43,8 @@ dependencies:
       url: https://github.com/maplibre/flutter-maplibre-gl.git
       ref: main
   form_validator: ^2.1.1
+  flutter_gemini: ^2.0.3
+  image_picker: ^1.0.7
 
 
 dev_dependencies:

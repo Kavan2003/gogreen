@@ -1,0 +1,28 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "gogreenfrontend",
+            "cwd": "gogreenfrontend",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "gogreenfrontend (profile mode)",
+            "cwd": "gogreenfrontend",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "gogreenfrontend (release mode)",
+            "cwd": "gogreenfrontend",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}

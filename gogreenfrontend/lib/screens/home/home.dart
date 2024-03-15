@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gogreenfrontend/maps/maps.dart';
+import 'package:gogreenfrontend/screens/analysis/analysis.dart';
 import 'package:gogreenfrontend/screens/login/login.dart';
 import '../../util/constants.dart';
 
@@ -115,7 +116,6 @@ class ProfileScreen extends StatelessWidget {
   }
 }
 
-
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -133,20 +133,6 @@ class SearchScreen extends StatelessWidget {
     return const Center(
       child: Text(
         'Search Screen',
-        style: TextStyle(fontSize: 20.0),
-      ),
-    );
-  }
-}
-
-class AnalysisScreen extends StatelessWidget {
-  const AnalysisScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text(
-        'Analysis Screen',
         style: TextStyle(fontSize: 20.0),
       ),
     );
