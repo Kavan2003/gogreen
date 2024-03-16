@@ -35,20 +35,7 @@ class MapComponentState extends State<MapComponent> {
     mapController = controller;
 
     mapController.addListener(() {
-      setState(() {
-        // print("Zoom level: ${mapController.cameraPosition!.zoom}");
-        // var zoom = mapController.cameraPosition!.zoom;
-        // var radiusMeters = 10000; // 10 km in meters
-
-        // var devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
-
-        // var minRadiusPixels = 50.0; // Adjust as needed
-
-        // var pixelRatio = 156543.03392 * math.pow(2, zoom);
-        // var adjustedPixelRatio = pixelRatio * devicePixelRatio;
-
-        // var circleRadiusPixels =70.00;
-      });
+      setState(() {});
     });
 
     _onStyleLoaded();
@@ -60,9 +47,7 @@ class MapComponentState extends State<MapComponent> {
   }
 
   void _addCircles() {
-    // var radiusMeters = 10; /// 10 km in meters
-    // var pixelRatio = 10 * math.pow(2, zoom); // Adjust as needed
-    var circleRadiusPixels = 5.90;
+    var circleRadiusPixels = 10.00;
 
     for (var area in widget.qualityarea) {
       var airQuality = AirQuality(
@@ -74,7 +59,7 @@ class MapComponentState extends State<MapComponent> {
         so2: area.pollutant_so2 ?? '',
       );
 
-      var color = airQuality.airQuality; // Get color based on air quality
+      var color = airQuality.airQuality;
 
       mapController.addCircle(
         CircleOptions(
@@ -82,7 +67,7 @@ class MapComponentState extends State<MapComponent> {
               LatLng(double.parse(area.latitude), double.parse(area.longitude)),
           circleRadius: circleRadiusPixels,
           draggable: false,
-          circleOpacity: 0.9,
+          circleOpacity: 0.5,
           circleColor: color,
         ),
       );

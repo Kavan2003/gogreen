@@ -25,9 +25,12 @@ class _AnalysisFormState extends State<AnalysisForm> {
   final industrialFacilitiesController = TextEditingController();
   final openBurningController = TextEditingController();
   final otherController = TextEditingController();
+  final folloback = TextEditingController();
 
   bool isSwitched = false;
   bool loading = false;
+  bool isforchat = false;
+  bool loading2 = false;
 
   final _imagePicker = ImagePicker();
 
@@ -41,7 +44,7 @@ class _AnalysisFormState extends State<AnalysisForm> {
   }
 
   String output = "";
-
+  final gprompt = "";
   void submitdata() {
     final enteredPrimaryReasons = primaryReasonsController.text;
     final enteredNumPeopleObserved = numPeopleObservedController.text;
@@ -54,6 +57,7 @@ class _AnalysisFormState extends State<AnalysisForm> {
     final enteredIndustrialFacilities = industrialFacilitiesController.text;
     final enteredOpenBurning = openBurningController.text;
     final enteredOther = otherController.text;
+
     final String combinepromptinJson = '''
 
    
@@ -72,7 +76,7 @@ class _AnalysisFormState extends State<AnalysisForm> {
    }
    ''';
     final gprompt =
-        "Act as an bio diverserty researcher and a analyst, I am providing you with json like data and I want a complete detailed analysis and key insights and how to make it better place by growing plants give sugested plants for growing. JSON: $combinepromptinJson ";
+        "Act as an bio diverserty researcher and a analyst, I am providing you with json like data and I want a complete detailed analysis and key insights and how to make it better place by growing plants give sugested plants for growing. JSON: $combinepromptinJson. And at end in prper format.give me list of plants thjat can be grown and along with its benifits to place  ";
     final gemini = Gemini.instance;
 
     final file = File(_pickedImage!.path);
@@ -92,6 +96,7 @@ class _AnalysisFormState extends State<AnalysisForm> {
               setState(() {
                 loading = false;
                 output = value?.content?.parts?.join("_") ?? 'not avaiable';
+                isforchat = true;
               }),
               log(value?.content?.parts?.join("_") ?? '')
             })
@@ -100,442 +105,517 @@ class _AnalysisFormState extends State<AnalysisForm> {
 
   @override
   Widget build(BuildContext context) {
-    return loading
-        ? Center(
-            child: CircularProgressIndicator(),
+    return isforchat
+        ? Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(padding: const EdgeInsets.all(8.0), child: Text(output)),
+              SizedBox(height: 20.0),
+              loading2
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : TextField(
+                      controller: folloback,
+                      decoration: InputDecoration(
+                        labelText: 'Follow Back Question?',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25.0),
+                          borderSide: BorderSide(
+                            color: Colors.grey[850]!,
+                            width: 1.0,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25.0),
+                          borderSide: BorderSide(
+                            color: GoGreenColors.primaryDark,
+                            width: 2.0,
+                          ),
+                        ),
+                      ),
+                    ),
+              SizedBox(height: 20.0),
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    loading2 = true;
+                  });
+                  final gemini = Gemini.instance;
+                  gemini
+                      .chat([
+                        Content(parts: [
+                          Parts(text: gprompt),
+                        ], role: 'user'),
+                        Content(parts: [Parts(text: output)], role: 'model'),
+                      ])
+                      .then((value) => {
+                            setState(() {
+                              loading2 = false;
+                              output = value?.content?.parts?.join("_") ??
+                                  'not avaiable';
+                            }),
+                            log(value?.content?.parts?.join("_") ?? '')
+                          })
+                      .catchError((e) => log('textAndImageInput', error: e));
+                },
+                child: const Text(
+                  'Submit',
+                  style: TextStyle(
+                    color: GoGreenColors.primaryContrast,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 18,
+                  ),
+                ),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                    GoGreenColors.primaryDark,
+                  ),
+                ),
+              ),
+            ],
           )
-        : Container(
-            padding: EdgeInsets.all(paddingvalue),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: isSwitched
-                  ? [
-                      Text(output),
-                      Container(
-                        height: 50,
-                        width: double.infinity,
-                        child: TextButton(
-                            onPressed: () => _pickImage(ImageSource.camera),
-                            child: Text(
-                              'Open Camera',
-                              style: TextStyle(
-                                color: GoGreenColors.primaryContrast,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                              ),
-                            ),
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                GoGreenColors.primaryDark,
-                              ),
-                            )),
-                      ),
-                      SizedBox(height: 15),
-                      Container(
-                        height: 50,
-                        width: double.infinity,
-                        child: TextButton(
-                            onPressed: () => _pickImage(ImageSource.gallery),
-                            child: Text(
-                              'Open Gallery',
-                              style: TextStyle(
-                                color: GoGreenColors.primaryContrast,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                              ),
-                            ),
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                GoGreenColors.primaryDark,
-                              ),
-                            )),
-                      ),
-                      SizedBox(height: 15),
-                      _pickedImage != null
-                          ? Image.file(File(_pickedImage!.path))
-                          : Container(
-                              height: 50,
-                              width: double.infinity,
-                              padding: EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Colors.grey,
-                                  width: 1,
+        : loading
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : Container(
+                padding: EdgeInsets.all(paddingvalue),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: isSwitched
+                      ? [
+                          Container(
+                            height: 50,
+                            width: double.infinity,
+                            child: TextButton(
+                                onPressed: () => _pickImage(ImageSource.camera),
+                                child: Text(
+                                  'Open Camera',
+                                  style: TextStyle(
+                                    color: GoGreenColors.primaryContrast,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                    GoGreenColors.primaryDark,
+                                  ),
+                                )),
+                          ),
+                          SizedBox(height: 15),
+                          Container(
+                            height: 50,
+                            width: double.infinity,
+                            child: TextButton(
+                                onPressed: () =>
+                                    _pickImage(ImageSource.gallery),
+                                child: Text(
+                                  'Open Gallery',
+                                  style: TextStyle(
+                                    color: GoGreenColors.primaryContrast,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                    GoGreenColors.primaryDark,
+                                  ),
+                                )),
+                          ),
+                          SizedBox(height: 15),
+                          _pickedImage != null
+                              ? Image.file(File(_pickedImage!.path))
+                              : Container(
+                                  height: 50,
+                                  width: double.infinity,
+                                  padding: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Colors.grey,
+                                      width: 1,
+                                    ),
+                                  ),
+                                  margin: EdgeInsets.all(10),
+                                  child: Text('No image selected'),
+                                ),
+                          SizedBox(height: 15),
+                          Container(
+                            height: 50,
+                            width: double.infinity,
+                            child: TextButton(
+                              onPressed: () {
+                                setState(() {
+                                  submitdata();
+                                });
+                              },
+                              child: Text(
+                                'Next',
+                                style: TextStyle(
+                                  color: GoGreenColors.primaryContrast,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
                                 ),
                               ),
-                              margin: EdgeInsets.all(10),
-                              child: Text('No image selected'),
-                            ),
-                      SizedBox(height: 15),
-                      Container(
-                        height: 50,
-                        width: double.infinity,
-                        child: TextButton(
-                          onPressed: () {
-                            setState(() {
-                              submitdata();
-                            });
-                          },
-                          child: Text(
-                            'Next',
-                            style: TextStyle(
-                              color: GoGreenColors.primaryContrast,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            ),
-                          ),
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                              GoGreenColors.primaryDark,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ]
-                  : [
-                      SizedBox(height: 50.0),
-                      TextField(
-                          controller: primaryReasonsController,
-                          decoration: InputDecoration(
-                            labelText: 'Enter primary reasons of red zone',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(25.0),
-                              borderSide: BorderSide(
-                                color: Colors.grey[850]!,
-                                width: 1.0,
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                  GoGreenColors.primaryDark,
+                                ),
                               ),
                             ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(25.0),
-                              borderSide: BorderSide(
-                                color: GoGreenColors.primaryDark,
-                                width: 2.0,
+                          ),
+                        ]
+                      : [
+                          SizedBox(height: 50.0),
+                          TextField(
+                              controller: primaryReasonsController,
+                              decoration: InputDecoration(
+                                labelText: 'Enter primary reasons of red zone',
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(25.0),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey[850]!,
+                                    width: 1.0,
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(25.0),
+                                  borderSide: BorderSide(
+                                    color: GoGreenColors.primaryDark,
+                                    width: 2.0,
+                                  ),
+                                ),
+                              )),
+                          SizedBox(height: 20),
+                          TextField(
+                            controller: numPeopleObservedController,
+                            decoration: InputDecoration(
+                              labelText: 'Number of people observed outdoors',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                borderSide: BorderSide(
+                                  color: Colors.grey[850]!,
+                                  width: 1.0,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                borderSide: BorderSide(
+                                  color: GoGreenColors.primaryDark,
+                                  width: 2.0,
+                                ),
                               ),
                             ),
-                          )),
-                      SizedBox(height: 20),
-                      TextField(
-                        controller: numPeopleObservedController,
-                        decoration: InputDecoration(
-                          labelText: 'Number of people observed outdoors',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                            borderSide: BorderSide(
-                              color: Colors.grey[850]!,
-                              width: 1.0,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
+                          ),
+                          SizedBox(height: 20),
+                          TextField(
+                            controller: observationsController,
+                            decoration: InputDecoration(
+                              labelText: 'Observations',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                borderSide: BorderSide(
+                                  color: Colors.grey[850]!,
+                                  width: 1.0,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                borderSide: BorderSide(
+                                  color: GoGreenColors.primaryDark,
+                                  width: 2.0,
+                                ),
+                              ),
                             ),
                           ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                            borderSide: BorderSide(
-                              color: GoGreenColors.primaryDark,
-                              width: 2.0,
+                          SizedBox(height: 20),
+                          DropdownButtonFormField<String>(
+                            items: ['Good', 'Moderate', 'Poor']
+                                .map((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                visibilityController.text = value!;
+                              });
+                            },
+                            decoration: InputDecoration(
+                              labelText: 'Visibility',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                borderSide: BorderSide(
+                                  color: Colors.grey[850]!,
+                                  width: 1.0,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                borderSide: BorderSide(
+                                  color: GoGreenColors.primaryDark,
+                                  width: 2.0,
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                        keyboardType: TextInputType.number,
-                        inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.digitsOnly
+                          SizedBox(height: 20),
+                          DropdownButtonFormField<String>(
+                            items: ['Present', 'Absent'].map((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                hazeSmogController.text = value!;
+                              });
+                            },
+                            decoration: InputDecoration(
+                              labelText: 'Haze/Smog',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                borderSide: BorderSide(
+                                  color: Colors.grey[850]!,
+                                  width: 1.0,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                borderSide: BorderSide(
+                                  color: GoGreenColors.primaryDark,
+                                  width: 2.0,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          TextField(
+                            controller: dustController,
+                            decoration: InputDecoration(
+                              labelText: 'Odors',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                borderSide: BorderSide(
+                                  color: Colors.grey[850]!,
+                                  width: 1.0,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                borderSide: BorderSide(
+                                  color: GoGreenColors.primaryDark,
+                                  width: 2.0,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          DropdownButtonFormField<String>(
+                            items: ['Present', 'Absent'].map((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                vehicleTrafficController.text = value!;
+                              });
+                            },
+                            decoration: InputDecoration(
+                              labelText: 'Dust',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                borderSide: BorderSide(
+                                  color: Colors.grey[850]!,
+                                  width: 1.0,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                borderSide: BorderSide(
+                                  color: GoGreenColors.primaryDark,
+                                  width: 2.0,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          DropdownButtonFormField<String>(
+                            items: ['Heavy', 'Moderate', 'Light']
+                                .map((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                constructionActivityController.text = value!;
+                              });
+                            },
+                            decoration: InputDecoration(
+                              labelText: 'Vehicle traffic',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                borderSide: BorderSide(
+                                  color: Colors.grey[850]!,
+                                  width: 1.0,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                borderSide: BorderSide(
+                                  color: GoGreenColors.primaryDark,
+                                  width: 2.0,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          DropdownButtonFormField<String>(
+                            items: ['Present', 'Absent'].map((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                industrialFacilitiesController.text = value!;
+                              });
+                            },
+                            decoration: InputDecoration(
+                              labelText: 'Construction activity',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                borderSide: BorderSide(
+                                  color: Colors.grey[850]!,
+                                  width: 1.0,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                borderSide: BorderSide(
+                                  color: GoGreenColors.primaryDark,
+                                  width: 2.0,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          TextField(
+                            controller: openBurningController,
+                            decoration: InputDecoration(
+                              labelText: 'Industrial facilities',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                borderSide: BorderSide(
+                                  color: Colors.grey[850]!,
+                                  width: 1.0,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                borderSide: BorderSide(
+                                  color: GoGreenColors.primaryDark,
+                                  width: 2.0,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 20.0),
+                          DropdownButtonFormField<String>(
+                            items: ['Present', 'Absent'].map((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                openBurningController.text = value!;
+                              });
+                            },
+                            decoration: InputDecoration(
+                              labelText: 'Open burning',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                borderSide: BorderSide(
+                                  color: Colors.grey[850]!,
+                                  width: 1.0,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                borderSide: BorderSide(
+                                  color: GoGreenColors.primaryDark,
+                                  width: 2.0,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 20.0),
+                          TextField(
+                            decoration: InputDecoration(
+                              labelText: 'Other',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                borderSide: BorderSide(
+                                  color: Colors.grey[850]!,
+                                  width: 1.0,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                borderSide: BorderSide(
+                                  color: GoGreenColors.primaryDark,
+                                  width: 2.0,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 20.0),
+                          Container(
+                            height: 50,
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                setState(() {
+                                  isSwitched = true;
+                                  paddingvalue = 25.0;
+                                });
+                              },
+                              child: const Text(
+                                'Next',
+                                style: TextStyle(
+                                  color: GoGreenColors.primaryContrast,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 18,
+                                ),
+                              ),
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                  GoGreenColors.primaryDark,
+                                ),
+                              ),
+                            ),
+                          )
                         ],
-                      ),
-                      SizedBox(height: 20),
-                      TextField(
-                        controller: observationsController,
-                        decoration: InputDecoration(
-                          labelText: 'Observations',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                            borderSide: BorderSide(
-                              color: Colors.grey[850]!,
-                              width: 1.0,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                            borderSide: BorderSide(
-                              color: GoGreenColors.primaryDark,
-                              width: 2.0,
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      DropdownButtonFormField<String>(
-                        items: ['Good', 'Moderate', 'Poor'].map((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                        onChanged: (value) {
-                          setState(() {
-                            visibilityController.text = value!;
-                          });
-                        },
-                        decoration: InputDecoration(
-                          labelText: 'Visibility',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                            borderSide: BorderSide(
-                              color: Colors.grey[850]!,
-                              width: 1.0,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                            borderSide: BorderSide(
-                              color: GoGreenColors.primaryDark,
-                              width: 2.0,
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      DropdownButtonFormField<String>(
-                        items: ['Present', 'Absent'].map((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                        onChanged: (value) {
-                          setState(() {
-                            hazeSmogController.text = value!;
-                          });
-                        },
-                        decoration: InputDecoration(
-                          labelText: 'Haze/Smog',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                            borderSide: BorderSide(
-                              color: Colors.grey[850]!,
-                              width: 1.0,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                            borderSide: BorderSide(
-                              color: GoGreenColors.primaryDark,
-                              width: 2.0,
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      TextField(
-                        controller: dustController,
-                        decoration: InputDecoration(
-                          labelText: 'Odors',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                            borderSide: BorderSide(
-                              color: Colors.grey[850]!,
-                              width: 1.0,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                            borderSide: BorderSide(
-                              color: GoGreenColors.primaryDark,
-                              width: 2.0,
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      DropdownButtonFormField<String>(
-                        items: ['Present', 'Absent'].map((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                        onChanged: (value) {
-                          setState(() {
-                            vehicleTrafficController.text = value!;
-                          });
-                        },
-                        decoration: InputDecoration(
-                          labelText: 'Dust',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                            borderSide: BorderSide(
-                              color: Colors.grey[850]!,
-                              width: 1.0,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                            borderSide: BorderSide(
-                              color: GoGreenColors.primaryDark,
-                              width: 2.0,
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      DropdownButtonFormField<String>(
-                        items:
-                            ['Heavy', 'Moderate', 'Light'].map((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                        onChanged: (value) {
-                          setState(() {
-                            constructionActivityController.text = value!;
-                          });
-                        },
-                        decoration: InputDecoration(
-                          labelText: 'Vehicle traffic',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                            borderSide: BorderSide(
-                              color: Colors.grey[850]!,
-                              width: 1.0,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                            borderSide: BorderSide(
-                              color: GoGreenColors.primaryDark,
-                              width: 2.0,
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      DropdownButtonFormField<String>(
-                        items: ['Present', 'Absent'].map((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                        onChanged: (value) {
-                          setState(() {
-                            industrialFacilitiesController.text = value!;
-                          });
-                        },
-                        decoration: InputDecoration(
-                          labelText: 'Construction activity',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                            borderSide: BorderSide(
-                              color: Colors.grey[850]!,
-                              width: 1.0,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                            borderSide: BorderSide(
-                              color: GoGreenColors.primaryDark,
-                              width: 2.0,
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      TextField(
-                        controller: openBurningController,
-                        decoration: InputDecoration(
-                          labelText: 'Industrial facilities',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                            borderSide: BorderSide(
-                              color: Colors.grey[850]!,
-                              width: 1.0,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                            borderSide: BorderSide(
-                              color: GoGreenColors.primaryDark,
-                              width: 2.0,
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 20.0),
-                      DropdownButtonFormField<String>(
-                        items: ['Present', 'Absent'].map((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                        onChanged: (value) {
-                          setState(() {
-                            openBurningController.text = value!;
-                          });
-                        },
-                        decoration: InputDecoration(
-                          labelText: 'Open burning',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                            borderSide: BorderSide(
-                              color: Colors.grey[850]!,
-                              width: 1.0,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                            borderSide: BorderSide(
-                              color: GoGreenColors.primaryDark,
-                              width: 2.0,
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 20.0),
-                      TextField(
-                        decoration: InputDecoration(
-                          labelText: 'Other',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                            borderSide: BorderSide(
-                              color: Colors.grey[850]!,
-                              width: 1.0,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                            borderSide: BorderSide(
-                              color: GoGreenColors.primaryDark,
-                              width: 2.0,
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 20.0),
-                      Container(
-                        height: 50,
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            setState(() {
-                              isSwitched = true;
-                              paddingvalue = 25.0;
-                            });
-                          },
-                          child: const Text(
-                            'Next',
-                            style: TextStyle(
-                              color: GoGreenColors.primaryContrast,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 18,
-                            ),
-                          ),
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                              GoGreenColors.primaryDark,
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-            ),
-          );
+                ),
+              );
   }
 }
