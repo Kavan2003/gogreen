@@ -72,7 +72,7 @@ class _AnalysisFormState extends State<AnalysisForm> {
    }
    ''';
     final gprompt =
-        "Analysis form data is given is json format: $combinepromptinJson .Give me the entire analysis of this data suggest me plants to grow to improve my data also check image of that area if you require it ";
+        "Act as an bio diverserty researcher and a analyst, I am providing you with json like data and I want a complete detailed analysis and key insights and how to make it better place by growing plants give sugested plants for growing. JSON: $combinepromptinJson ";
     final gemini = Gemini.instance;
 
     final file = File(_pickedImage!.path);

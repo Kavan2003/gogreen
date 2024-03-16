@@ -45,6 +45,7 @@ dependencies:
   form_validator: ^2.1.1
   flutter_gemini: ^2.0.3
   image_picker: ^1.0.7
+  autocomplete_textfield: ^2.0.1
 
 
 dev_dependencies:
