@@ -55,6 +55,3 @@ flutter pub get
 #### If you encounter any issues or have suggestions for improvement, please feel free to create an issue or connect with us on LinkedIn.
 #### With GoGreen Flutter App, we aim to empower users to make environmentally conscious decisions and contribute to a sustainable future.
 
-```
-
-```
