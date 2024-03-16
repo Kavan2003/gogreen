@@ -10,7 +10,7 @@ GoGreen Flutter App is a comprehensive application aimed at promoting environmen
 - **Plant Suggestions:** Receive personalized plant suggestions based on your location and environmental conditions, powered by Gemini API.
 - **Location-based AQI Search:** Search for AQI data in specific locations to make informed decisions about outdoor activities and health precautions.
 
-## Installation and Setup
+## Dependencies
 
 To use GoGreen Flutter App, ensure you have Flutter installed and add the necessary dependencies to your `pubspec.yaml` file:
 
